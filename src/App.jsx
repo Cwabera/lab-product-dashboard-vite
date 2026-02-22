@@ -1,23 +1,42 @@
-import React, { useState } from 'react';
-import ProductList from './components/ProductList';
+import { useState } from "react"
+import { Container, Button } from "@mui/material"
+import ProductList from "./components/ProductList"
+import "./App.css"
 
-const App = () => {
-  // TODO: Define initial product data
+function App() {
+  const [products, setProducts] = useState([
+    { id: 1, name: "Laptop", price: 999, available: true },
+    { id: 2, name: "Phone", price: 699, available: false },
+    { id: 3, name: "Tablet", price: 499, available: true }
+  ])
 
-  // TODO: Implement state to manage filtering
+  const [showAvailableOnly, setShowAvailableOnly] = useState(false)
 
-  // TODO: Implement logic to filter products based on availability
+  const handleRemove = (id) => {
+    setProducts(products.filter(product => product.id !== id))
+  }
+
+  const filteredProducts = showAvailableOnly
+    ? products.filter(product => product.available)
+    : products
 
   return (
-    <div>
-      <h1>{/* TODO: Add 'Product Dashboard' title here */}</h1>
-      
-      {/* TODO: Add buttons to allow filtering by availability */}
+    <Container>
+      <h1>Product Dashboard</h1>
 
-      {/* TODO: Render the ProductList component and pass filtered products */}
-      
-    </div>
-  );
-};
+      <Button
+        variant="contained"
+        onClick={() => setShowAvailableOnly(!showAvailableOnly)}
+      >
+        {showAvailableOnly ? "Show All" : "Show Available Only"}
+      </Button>
 
-export default App;
+      <ProductList
+        products={filteredProducts}
+        onRemove={handleRemove}
+      />
+    </Container>
+  )
+}
+
+export default App
